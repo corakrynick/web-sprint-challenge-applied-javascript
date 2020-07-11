@@ -3,7 +3,16 @@ import axios from 'axios'
 // -----------------------
 axios.get('https://lambda-times-backend.herokuapp.com/articles')
 .then(response => {
-    console.log(response);
+    
+    const articles = response.data.articles;
+    console.log(articles);
+    for(let article in articles){
+        articles[article].forEach((artEl) => {
+            cards.appendChild(cardMaker(artEl))
+        })
+        
+    }
+
 })
 .catch(error => {
     console.dir(error);
@@ -46,11 +55,20 @@ function cardMaker(object) {
 
     div.appendChild(headline);
     div.appendChild(author);
-    author.appendChild(image);
-    
+    author.appendChild(imgContainer);
+    imgContainer.appendChild(image);
+    author.appendChild(byWho);
 
     headline.textContent = object.headline;
-    image.textContent = object.authorPhoto;
+    image.src = object.authorPhoto;
     byWho.textContent = object.authorName;
 
+    div.addEventListener('click', () => {
+        console.log(headline.textContent);
+    })
+
+    return div;
 }
+console.log(cardMaker({headline: "Headline of article",
+authorPhoto: "url of authors image",
+authorName: "author's name",}))
